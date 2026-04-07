@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamesh Love Story</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    transition: all 1s ease;
+    overflow: hidden;
+}
+
+/* START SCREEN */
+#start {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#ff4d6d, #ff758c);
+    color: white;
+    flex-direction: column;
+}
+
+/* PASSWORD */
+#lock {
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #111;
+    color: white;
+}
+
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+/* MAIN */
+.container {
+    padding: 40px 15px;
+    animation: fade 1s;
+}
+
+@keyframes fade {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+}
+
+/* THEMES */
+.phase1 { background: linear-gradient(#ffdde1,#ee9ca7);}
+.phase2 { background: linear-gradient(#ff4d6d,#ff758c);}
+.phase3 { background: linear-gradient(#ff758c,#ff7eb3);}
+.phase4 { background: linear-gradient(#2c2c2c,#000);}
+.phase5 { background: black; }
+
+/* HEART */
+.heart {
+    position: absolute;
+    animation: float 5s linear infinite;
+}
+@keyframes float {
+    from {transform: translateY(100vh);}
+    to {transform: translateY(-10vh);}
+}
+
+/* RAIN */
+.rain {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: white;
+    animation: rain 0.5s linear infinite;
+}
+@keyframes rain {
+    from {transform: translateY(-100vh);}
+    to {transform: translateY(100vh);}
+}
+
+/* BLACKOUT */
+#blackout {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- START -->
+<div id="start">
+    <h1>Kamesh Love Story ❤️</h1>
+    <button onclick="enter()">Enter</button>
+</div>
+
+<!-- PASSWORD -->
+<div id="lock">
+    <h2>Enter Password 🔒</h2>
+    <input type="password" id="pass">
+    <button onclick="check()">Unlock</button>
+</div>
+
+<!-- MAIN -->
+<div id="main" class="container" style="display:none;">
+    <h2 id="title"></h2>
+    <p id="text"></p>
+    <button onclick="next()">Next ➜</button>
+</div>
+
+<!-- BLACKOUT -->
+<div id="blackout">
+    <p id="finalText"></p>
+</div>
+
+<script>
+function enter(){
+    document.getElementById("start").style.display="none";
+    document.getElementById("lock").style.display="flex";
+}
+
+function check(){
+    if(document.getElementById("pass").value=="3010"){
+        document.getElementById("lock").style.display="none";
+        document.getElementById("main").style.display="block";
+        loadPhase();
+    } else {
+        alert("Wrong password");
+    }
+}
+
+let phase=0;
+
+/* 🔥 YOU FILL TEXT HERE */
+const data=[
+{title:"Just Friends 🙂",text:`first time una na carrom la meet panna oru ponnu mari pesi un insta insta id vanguna othukuran athu thapu tha ana yanaku apa frd nu sollikra mari yarum illa na atha apadi panna but ana nee sikarama kandu pudichita but nee enna purijikita enna mathichi pesuna la athuvey yanaku un mel oru crush achi na unkit kamichikala aprm un story la ketaa apa la purijikita krishna story ellam avan una truve love pannla ellam naalla pochi romba romba inaiki enaicha kuda antha days thirupi varathu yanaku teriyum but ana life na yanaku romba pudicha days athalam.`},
+{title:"Love Started ❤️",text:`namba kjm kjm ma peasi yapadi love achi therila ana yatho namaku ula oru relationship create achi nalla pochi romba romba starting la namba iruntha mari yarum anatha alavuku happy ya irunthu iruka mattanga May 29 unaku yanaku marriage achi nu namba sonom nabagam iruka theril unaku aprm june 20 nee en love va full accept pann ellam nalla pochi daily nee stroy podurathu na podurathu nee enku notes vaikuratu na vairkurathu ellam romba romba happy ya irunthom nee yanku yapa paru love love soldrathu ellam enna mama mama mama sooluva aprm ammu ammu ammu sona aprm short ta muu muu sona apa la ennaiyum love panna ponnu iruka solli avlo happy ya iruntha oru naal tharavarama unaku story podurssathu ellam athu oru sorugam mari irunthichi di .`},
+{title:"Everything Changed 💔",text:`ellam nalla pochi namaku nee college ponna nanum pona namaba ellam apadi kammi achi oru oru nalla avlo pesuvom vc la aramicha 1 hour minmum irunthichi call la yavlo neram maximum time la kandu pudcihom avlo happiness love ellam riutnhichi ellam kjm kjmkoranjichi apavum nee enna avlo love panna na num love panna apa realize panna ohh strating stage antha habit la irukum like notes podurathu story ;a antha mari aprm kjm kjm ma koranjichi enna soldrthu therila oru mari irunthichi apa tha namba sanda la start ana stage .`},
+{title:"Distance 🌧️",text:`intha stage tha namaku ula oru periya distance uruachi yanna avlo sanda poda aramicha unga anna nukaga enna police kita pudichi kudupan sona enna avlo kevalama pesuna aprm enga amma va enna valathathu thapa sona daily sanda potta ipolam peasuna eranji eranji viluntha life la yanku oru aga aramichidichi nee ketta enna solluva ing nadakaarathu uanku theriyathu sodrla nee atha sollavum matta romba mari mari panna nee marita sona odaney neeyum tha maruna na marita soldra avlo sanda vanthakam unkuda tha na irukanum neahipa ana nee enna mathikarathu illa un nenjila kai vechi yosichi paru last t enkita yapa nalla pesuna nee ya yapa i love sona nee ya yapa mama sona ellam en chat irutha eduthu paru ithu mari naraya solluva namaku ula nee ana na na illa unga vitula irukavangala patha nee avangala tha soldra.`},
+{title:"The End 😔",text:`anyways nee namba love story ya pudichita ellam yatho oru mari iruku life la perususa miss panna mari unmaiya inaki varaikum enga appava na neachi aluthathu illa una intha msg na type panna kula kuda en kannu kalangu en life la na var kitayum aluthathu illa yanakua di patta apa kuda na alala ana ipo kannu la ipadi uththu yanaku theriyum nee thriupi vara matta athu yanaku theriji pochi di ana unmaiya neeyum ellar mari family ya lover ra patha family nu sollitu pora la en friends kita sona enna kekeuranga enna da family kaga una vidura nu nee enkita sona enna analum na unkuda mattum tha irupa enga vitula blackmail panna kuda una vida mattan da la oru promise pannitnaga nu intha alavuku pandra di nee life la yara venumnalum nambu un anna na mattum nambidatha nee kanidpa alinji poiduva una avan valavey vida panna na sona mari panna na antha naai marriage agura varaikum anatha naai muditu tha irunthichi ipa velaiya kattiduchi pathiya avan tha ellam solli irupan anth naai marriage ku vanthathu kuda avan kariyam mudinja odaney avan velaiya kattitan pathiya ini nee sand poda kuda na iruka matta en enga anna na thitura nu kuda na illa agirichi un life la yanku thanga mudila tha romba vailithu oru mari iruku 3years true love intha msg type kuda ennala panna mduila na msg ahh send anna unga vitula paapanga sollithsa website ready panna nee yapdi antha singgapore karantha marriage panuva avana nalla vana paru na vena agirichi nee marriage pandravan kuda achi happy ys iru ya yapadiyo pora onu soldran di na una unmaiya tha love panna unaku marriage ana kuda antha news mattum yanaku varatha mari pathuko di odanjiruvan di sethuruvan di na nee yanaika vanthurva nu na en life ahh otikiran atha spoil pannidatha un kaal la kuda viluran athu mari yanku enna analum unaku yathum vara mari pathukura nee intha msg ku repl kuda panna matta therijium anyways nee achi happy ya iru na yapdi ya pora enna neanch nee feel pannatha ennaika en nabagam vantha vara anaiki na iruka mtta thedatha good bye miss you ever and love di my dear panda panda la start pannathu panda la mudiyatum good bye`}
+];
+
+function typeWriter(text, el, i=0){
+    if(i<text.length){
+        el.innerHTML+=text.charAt(i);
+        setTimeout(()=>typeWriter(text,el,i+1),25);
+    }
+}
+
+function loadPhase(){
+    let d=data[phase];
+    document.body.className="phase"+(phase+1);
+
+    document.getElementById("title").innerText=d.title;
+    let el=document.getElementById("text");
+    el.innerHTML="";
+    typeWriter(d.text,el);
+
+    if(phase==1) hearts();
+    if(phase==3) rain();
+}
+
+function next(){
+    if(phase<data.length-1){
+        phase++;
+        loadPhase();
+    } else {
+        end();
+    }
+}
+
+function hearts(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.style.left=Math.random()*100+"vw";
+        h.innerHTML="❤️";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),5000);
+    },300);
+}
+
+function rain(){
+    setInterval(()=>{
+        let r=document.createElement("div");
+        r.className="rain";
+        r.style.left=Math.random()*100+"vw";
+        document.body.appendChild(r);
+        setTimeout(()=>r.remove(),500);
+    },50);
+}
+
+function end(){
+    document.getElementById("main").style.display="none";
+    let b=document.getElementById("blackout");
+    b.style.display="flex";
+
+    let text="Developed by ur Kamesh... muu ❤️";
+    let el=document.getElementById("finalText");
+    typeWriter(text,el);
+}
+</script>
+
+</body>
+</html>
